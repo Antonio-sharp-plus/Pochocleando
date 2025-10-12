@@ -84,6 +84,11 @@ async function SeriesDrama(page = 1) {
     return response.json();
 }
 
+async function ObtenerProveedores(id, tipo) {
+    const response = await fetch(`${base_url}/${tipo}/${id}/watch/providers?api_key=${api_key}`);
+    return response.json();
+}
+
 module.exports = {
     BuscarId,
     BusquedaGeneral,
@@ -98,6 +103,7 @@ module.exports = {
     SeriesPopulares,
     SeriesValoradas,
     SeriesComedia,
-    SeriesDrama
+    SeriesDrama,
+    ObtenerProveedores
 }
 

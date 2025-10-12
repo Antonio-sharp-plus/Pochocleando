@@ -1,67 +1,111 @@
 <div class="detalle-container" *ngIf="data">
-    <button class="btn-volver" (click)="volver()">← Volver</button>
-    <!-- Portada y detalles principales -->
-    <div class="header-section">
+  <button class="btn-volver" (click)="volver()">← Volver</button>
+  <!-- Portada y detalles principales -->
+  <div class="header-section">
+    <!-- Contenido principal -->
+    <div class="main-data">
+      <!-- Poster -->
+      <img
+        [src]="'https://image.tmdb.org/t/p/w500' + data.poster_path"
+        onerror="this.src='images/notFound.png'"
+        class="poster"
+      />
 
-        <!-- Contenido principal -->
-        <div class="main-data">
-            <!-- Poster -->
-            <img [src]="'https://image.tmdb.org/t/p/w500' + data.poster_path" onerror="this.src='images/notFound.png'"
-                class="poster">
-
-            <!-- Detalles -->
-            <div class="details">
-                <div class="tituloyfecha">
-                    <h1 class="titulo">{{ data.title || data.name }}</h1>
-                    <span class="fecha">{{ data.release_date | date:'yyyy' }}</span>
-                </div>
-
-                <div class="divparaalinear">
-                    <!-- Metadata: Año, Duración, Géneros -->
-                    <div class="metadata">
-                        <br>
-                        <div class="duracion">
-                            <span>Duracion: {{ data.runtime }} minutos</span>
-                        </div>
-                        <br>
-                        <div>
-                            Género:
-                            @for(genre of data.genres; track genre){
-                                <span class="genero"> {{ genre.name }} -</span>
-                            }
-                        </div>
-                        <br>
-                        <div>
-                            <span class="votos">{{ data.vote_average?.toFixed(1) }}/10 </span>
-                            <span>({{ data.vote_count }} votos)</span>
-                        </div>
-                    </div>
-                    
-                    <div class="divFavoritos">
-                        <button class="BotonFavoritos" (click)="agregarOEliminarDeFavoritos()">
-                            {{ estaEnLosFavs ? 'Eliminar de Favoritos' : 'Agregar a Favoritos' }}
-                        </button>
-                    </div>
-                <!-- Sinopsis -->
-                <div class="resumen">
-                    <p>Sinopsis: <br>{{ data.overview }}</p>
-                </div>
-
-                <div class="divResena">
-                    <h3 class="tituloAgregarResena">Agregar reseña</h3>
-                    <textarea [(ngModel)]="comentario" placeholder="Escribe tu reseña"></textarea>
-                    <button class="botonResena" (click)="agregarResena()">Agregar reseña</button>
-                </div>
-
-                <div class="listaResenas" *ngIf="resenas?.length">
-                    <h3 class="tituloResenas">Reseñas</h3>
-                    @for (r of resenas; track r._id) {
-                    <div class="resena-item">
-                        <b>{{ r.usuario?.username }}</b>: {{ r.comentario }}
-                    </div>
-                    }
-                </div>
-            </div>
+      <!-- Detalles -->
+      <div class="details">
+        <div class="tituloyfecha">
+          <h1 class="titulo">{{ data.title || data.name }}</h1>
+          <span class="fecha">{{ data.release_date | date : "yyyy" }}</span>
         </div>
+
+        <div class="divparaalinear">
+          <!-- Metadata: Año, Duración, Géneros -->
+          <div class="metadata">
+            <br />
+            <div class="duracion">
+              <span>Duracion: {{ data.runtime }} minutos</span>
+            </div>
+            <br />
+            <div>
+              Género: @for(genre of data.genres; track genre){
+              <span class="genero"> {{ genre.name }} -</span>
+              }
+            </div>
+            <br />
+            <div>
+              <span class="votos">{{ data.vote_average?.toFixed(1) }}/10 </span>
+              <span>({{ data.vote_count }} votos)</span>
+            </div>
+          </div>
+
+          <div class="divFavoritos">
+            <button
+              class="BotonFavoritos"
+              (click)="agregarOEliminarDeFavoritos()"
+            >
+              {{
+                estaEnLosFavs ? "Eliminar de Favoritos" : "Agregar a Favoritos"
+              }}
+            </button>
+          </div>
+          <!-- Sinopsis -->
+          <div class="resumen">
+            <p>Sinopsis: <br />{{ data.overview }}</p>
+          </div>
+
+          <div class="proveedores">
+            <div *ngIf="pais == 'AR'; else default">
+              <p class="tituloProv">¿Dónde podés verlo desde Argentina?</p>
+              <div class="divProveedor">
+                <div
+                  *ngFor="let prov of listaProveedores"
+                  class="proveedor-item"
+                >
+                  <img
+                    [src]="prov.logo"
+                    onerror="this.src='images/notFound.png'"
+                    class="logoProv"
+                  />
+                  <p>{{ prov.name }}</p>
+                </div>
+              </div>
+            </div>
+
+            <ng-template #default>
+              <p class="tituloProv">¿Dónde podés verlo desde Estados Unidos?</p>
+              <div *ngFor="let prov of listaProveedores" class="proveedor-item">
+                <img
+                  [src]="prov.logo"
+                  onerror="this.src='images/notFound.png'"
+                  class="logoProv"
+                />
+                <p>{{ prov.name }}</p>
+              </div>
+            </ng-template>
+          </div>
+
+          <div class="divResena">
+            <h3 class="tituloAgregarResena">Agregar reseña</h3>
+            <textarea
+              [(ngModel)]="comentario"
+              placeholder="Escribe tu reseña"
+            ></textarea>
+            <button class="botonResena" (click)="agregarResena()">
+              Agregar reseña
+            </button>
+          </div>
+
+          <div class="listaResenas" *ngIf="resenas?.length">
+            <h3 class="tituloResenas">Reseñas</h3>
+            @for (r of resenas; track r._id) {
+            <div class="resena-item">
+              <b>{{ r.usuario?.username }}</b
+              >: {{ r.comentario }}
+            </div>
+            }
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

@@ -176,6 +176,18 @@ async function BuscarSeriesDrama(req, res) {
     }
 }
 
+async function ObtenerProveedores(req, res) {
+    try {
+        const id = req.params.id;
+        const tipo = req.params.tipo;
+        const country = req.query.country || 'AR';
+        const datos = await servicioTMDB.ObtenerProveedores(id, tipo, country);
+        res.json(datos);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 module.exports = {
     BuscarId,
     Trending,
@@ -192,5 +204,6 @@ module.exports = {
     BuscarSeriesComedia,
     BuscarSeriesDrama,
     BuscarSeriesPopulares,
-    BuscarSeriesValoradas
+    BuscarSeriesValoradas,
+    ObtenerProveedores
 }

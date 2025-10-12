@@ -163,7 +163,27 @@ async function BuscarSeriesDrama(page) {
     }
 }
 
-module.exports = {
+async function ObtenerProveedores(id, type, country = 'AR') {
+    try {
+        const datos = await repoTMDB.ObtenerProveedores(id, type);
+
+        if (datos.results[country])
+        { 
+            respuesta = {'AR': datos.results[country]};    
+        }
+        else
+        {
+            respuesta = {'US': datos.results.US}; 
+        }
+
+        return respuesta;
+    } 
+    catch {
+        return console.log("No se obtuvieron los datos de la API", error);
+    }
+}
+
+    module.exports = {
     BuscarId,
     Trending,
     BuscarPelículas,
@@ -179,5 +199,6 @@ module.exports = {
     BuscarSeriesDrama,
     BuscarSeriesPopulares,
     BuscarSeriesValoradas,
-    BuscarTodo
+    BuscarTodo,
+    ObtenerProveedores
 }
