@@ -166,8 +166,17 @@ async function BuscarSeriesDrama(page) {
 async function ObtenerProveedores(id, type, country = 'AR') {
     try {
         const datos = await repoTMDB.ObtenerProveedores(id, type);
-        if (datos.results[country]) return datos.results[country];
-        if (datos.results.US) return datos.results.US;
+
+        if (datos.results[country])
+        { 
+            respuesta = {'AR': datos.results[country]};    
+        }
+        else
+        {
+            respuesta = {'US': datos.results.US}; 
+        }
+
+        return respuesta;
     } 
     catch {
         return console.log("No se obtuvieron los datos de la API", error);

@@ -6,31 +6,33 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class ApiGeneral{
-
+export class ApiGeneral {
   constructor(private http: HttpClient) {}
 
-  getTrending(): Observable<any>{
+  getTrending(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/trending`);
   }
 
-  BusquedaGeneral(nombre: string): Observable<any>{
+  BusquedaGeneral(nombre: string): Observable<any> {
     return this.http.get(`${environment.apiUrl}/buscar/${nombre}`);
   }
 
-  BusquedaId(id: string, tipo: string): Observable<any>{
+  BusquedaId(id: string, tipo: string): Observable<any> {
     return this.http.get(`${environment.apiUrl}/buscarid/${id}/${tipo}`);
+  }
+
+  Proveedores(id: string, tipo: string): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/${tipo}/${id}/providers`);
   }
 }
 
 // Servicio para peliculas
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
-
   private apiGateway = environment.apiUrl + '/pelicula';
 
   constructor(private http: HttpClient) {}
@@ -42,7 +44,7 @@ export class ApiService {
 
   // filtro: BUSCAR POR NOMBRE
   buscarPelicula(nombre: string): Observable<any> {
-    console.log(`api.service.ts recibió ${nombre}`)
+    console.log(`api.service.ts recibió ${nombre}`);
     return this.http.get(`${this.apiGateway}/buscar/${nombre}`);
   }
 
@@ -73,14 +75,12 @@ export class ApiService {
   // filtro: MEJOR VALORADAS
   getPeliculasMejorValoradas(page: number): Observable<any> {
     return this.http.get(`${this.apiGateway}/valoradas?page=${page}`);
-  } 
-
+  }
 }
 
 //servicio para series
 @Injectable({ providedIn: 'root' })
 export class SeriesService {
-
   private apiGateway = environment.apiUrl + '/series';
 
   constructor(private http: HttpClient) {}
@@ -105,9 +105,8 @@ export class SeriesService {
     return this.http.get(`${this.apiGateway}/populares?page=${page}`);
   }
 
-   // filtro: BUSCAR POR NOMBRE
+  // filtro: BUSCAR POR NOMBRE
   buscarSerie(nombre: string): Observable<any> {
     return this.http.get(`${this.apiGateway}/buscar/${nombre}`);
   }
-  
 }
