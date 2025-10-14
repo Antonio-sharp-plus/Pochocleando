@@ -167,19 +167,20 @@ async function ObtenerProveedores(id, type, country = 'AR') {
     try {
         const datos = await repoTMDB.ObtenerProveedores(id, type);
 
-        if (datos.results[country])
-        { 
-            respuesta = {'AR': datos.results[country]};    
-        }
-        else
-        {
-            respuesta = {'US': datos.results.US}; 
+        const countryKey = String(country || 'AR').toUpperCase();
+        const results = (datos && datos.results) ? datos.results : {};
+
+        if (results && results[countryKey]) {
+            const respuesta = { [countryKey]: results[countryKey] };
+            return respuesta;
         }
 
-        return respuesta;
+        // No providers for requested country
+        return {};
     } 
-    catch {
-        return console.log("No se obtuvieron los datos de la API", error);
+    catch (error) {
+        console.log("No se obtuvieron los datos de la API", error);
+        return {};
     }
 }
 

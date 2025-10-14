@@ -54,33 +54,45 @@
           </div>
 
           <div class="proveedores">
-            <div *ngIf="pais == 'AR'; else default">
+            <ng-container *ngIf="countryShown === 'AR' && listaProveedores.length > 0; else noAR">
               <p class="tituloProv">¿Dónde podés verlo desde Argentina?</p>
               <div class="divProveedor">
-                <div
-                  *ngFor="let prov of listaProveedores"
-                  class="proveedor-item"
-                >
-                  <img
-                    [src]="prov.logo"
-                    onerror="this.src='images/notFound.png'"
-                    class="logoProv"
-                  />
+                <div *ngFor="let prov of listaProveedores" class="proveedor-item">
+                  <img [src]="prov.logo" onerror="this.src='images/notFound.png'" class="logoProv" />
                   <p>{{ prov.name }}</p>
                 </div>
               </div>
-            </div>
+            </ng-container>
 
-            <ng-template #default>
-              <p class="tituloProv">¿Dónde podés verlo desde Estados Unidos?</p>
-              <div *ngFor="let prov of listaProveedores" class="proveedor-item">
-                <img
-                  [src]="prov.logo"
-                  onerror="this.src='images/notFound.png'"
-                  class="logoProv"
-                />
-                <p>{{ prov.name }}</p>
-              </div>
+            <ng-template #noAR>
+              <ng-container *ngIf="mostrarPreguntaUS; else decisionTomada">
+                <p>
+                  Actualmente no contamos con un Servicio de Streaming que reproduzca este contenido en Argentina. Queres revisar si existe uno en EEUU?
+                </p>
+                <div class="acciones-proveedores">
+                  <button (click)="cargarProveedoresUS()">Si</button>
+                  <button (click)="rechazarUS()">No</button>
+                </div>
+              </ng-container>
+              <ng-template #decisionTomada>
+                <ng-container *ngIf="countryShown === 'US'; else soloMensajeAR">
+                  <p class="tituloProv">¿Donde podes verlo desde EEUU?</p>
+                  <div *ngIf="listaProveedores.length > 0; else sinUS">
+                    <div class="divProveedor">
+                      <div *ngFor="let prov of listaProveedores" class="proveedor-item">
+                        <img [src]="prov.logo" onerror="this.src='images/notFound.png'" class="logoProv" />
+                        <p>{{ prov.name }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <ng-template #sinUS>
+                    <p>No hay Servicios de Streaming que reproduzcan este contenido en este momento</p>
+                  </ng-template>
+                </ng-container>
+                <ng-template #soloMensajeAR>
+                  <p>Actualmente no contamos con un Servicio de Streaming que reproduzca este contenido en Argentina.</p>
+                </ng-template>
+              </ng-template>
             </ng-template>
           </div>
 

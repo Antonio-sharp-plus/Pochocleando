@@ -23,8 +23,10 @@ export class ApiGeneral {
     return this.http.get(`${environment.apiUrl}/buscarid/${id}/${tipo}`);
   }
 
-  Proveedores(id: string, tipo: string): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/${tipo}/${id}/providers`);
+  Proveedores(id: string, tipo: string, country: string = 'AR'): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/${tipo}/${id}/providers?country=${country}`
+    );
   }
 }
 

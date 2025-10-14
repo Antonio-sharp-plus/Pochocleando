@@ -21,6 +21,8 @@ export class DetalleComponent implements OnInit {
   proveedores: any = {};
   listaProveedores: any = [];
   pais: string = ''; //para ver de donde nos tira proveedores
+  countryShown: string = ''; // 'AR' | 'US' | ''
+  mostrarPreguntaUS: boolean = false;
 
   private subscription?: Subscription; // Para gestionar la desuscripción
 
@@ -58,41 +60,68 @@ export class DetalleComponent implements OnInit {
       error: (err) => console.error('Error al cargar datos:', err),
     });
 
-    //Traemos los proveedores ñeri
-    this.subscription = this.apiGeneral.Proveedores(id, tipo).subscribe({
+    //Traemos los proveedores de Argentina
+    this.subscription = this.apiGeneral.Proveedores(id, tipo, 'AR').subscribe({
       next: (datos) => {
-        this.proveedores = datos;
-        this.pais = Object.keys(this.proveedores)[0]; // nos dice de donde viene la info
+        this.proveedores = datos || {};
+        const dataAR = this.proveedores['AR'];
 
-        //metodo para filtrar la lista y hacerlo más fácil de mostrar - solo nombre del proovedor y logo
-
-        const data = this.proveedores[this.pais];
-
-        // combinar todos los arrays (si existen)
-        const todos = [
-          ...(data.buy || []),
-          ...(data.rent || []),
-          ...(data.flatrate || []),
-        ];
-
-        console.log(todos);
-        // crear un mapa para evitar duplicados
-        const mapa = new Map();
-
-        for (const p of todos) {
-          mapa.set(p.provider_name, {
-            name: p.provider_name,
-            logo: 'https://image.tmdb.org/t/p/original' + p.logo_path,
-          });
+        if (dataAR) {
+          this.pais = 'AR';
+          this.countryShown = 'AR';
+          this.listaProveedores = this.mapProviders(dataAR);
+        } else {
+          // No hay proveedores en AR -> mostrar mensaje con pregunta
+          this.pais = '';
+          this.countryShown = '';
+          this.listaProveedores = [];
+          this.mostrarPreguntaUS = true;
         }
-
-        // convertir el mapa a lista
-        const lista_proveedores = Array.from(mapa.values());
-        this.listaProveedores = lista_proveedores;
-        console.log(lista_proveedores);
       },
       error: (err) => console.error('Error al cargar proveedores ñaña:', err),
     });
+  }
+
+  private mapProviders(data: any): any[] {
+    const todos = [
+      ...(data?.buy || []),
+      ...(data?.rent || []),
+      ...(data?.flatrate || []),
+    ];
+
+    const mapa = new Map<string, { name: string; logo: string }>();
+    for (const p of todos) {
+      if (!p) continue;
+      mapa.set(p.provider_name, {
+        name: p.provider_name,
+        logo: 'https://image.tmdb.org/t/p/original' + p.logo_path,
+      });
+    }
+    return Array.from(mapa.values());
+  }
+
+  cargarProveedoresUS(): void {
+    const id = this.route.snapshot.params['id'];
+    const tipo = this.route.snapshot.params['tipo'];
+    this.apiGeneral.Proveedores(id, tipo, 'US').subscribe({
+      next: (datos) => {
+        const dataUS = (datos || {})['US'];
+        this.countryShown = 'US';
+        this.mostrarPreguntaUS = false;
+        this.listaProveedores = dataUS ? this.mapProviders(dataUS) : [];
+      },
+      error: (err) => {
+        this.countryShown = 'US';
+        this.mostrarPreguntaUS = false;
+        this.listaProveedores = [];
+        console.error('Error al cargar proveedores US:', err);
+      },
+    });
+  }
+
+  rechazarUS(): void {
+    this.mostrarPreguntaUS = false;
+    this.countryShown = '';
   }
 
   ngOnDestroy(): void {
