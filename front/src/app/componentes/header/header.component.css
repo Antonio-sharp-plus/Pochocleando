@@ -14,7 +14,7 @@ header {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 
     line-height: 1;
-    height: 150px;
+    height: 150px; /* altura fija para evitar CLS */
 }
 
 .header-container {
@@ -28,6 +28,7 @@ header {
 
 .logo {
     height: 125px;
+    width: auto; /* reservar proporción */
 }
 
 nav ul {

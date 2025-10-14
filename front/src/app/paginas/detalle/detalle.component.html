@@ -9,6 +9,8 @@
         [src]="'https://image.tmdb.org/t/p/w500' + data.poster_path"
         onerror="this.src='images/notFound.png'"
         class="poster"
+        [attr.alt]="(data.title || data.name) + ' poster'"
+        fetchpriority="high"
       />
 
       <!-- Detalles -->
@@ -58,7 +60,7 @@
               <p class="tituloProv">¿Dónde podés verlo desde Argentina?</p>
               <div class="divProveedor">
                 <div *ngFor="let prov of listaProveedores" class="proveedor-item">
-                  <img [src]="prov.logo" onerror="this.src='images/notFound.png'" class="logoProv" />
+                  <img [src]="prov.logo" onerror="this.src='images/notFound.png'" class="logoProv" [attr.alt]="prov.name" />
                   <p>{{ prov.name }}</p>
                 </div>
               </div>
@@ -80,7 +82,7 @@
                   <div *ngIf="listaProveedores.length > 0; else sinUS">
                     <div class="divProveedor">
                       <div *ngFor="let prov of listaProveedores" class="proveedor-item">
-                        <img [src]="prov.logo" onerror="this.src='images/notFound.png'" class="logoProv" />
+                        <img [src]="prov.logo" onerror="this.src='images/notFound.png'" class="logoProv" [attr.alt]="prov.name" />
                         <p>{{ prov.name }}</p>
                       </div>
                     </div>

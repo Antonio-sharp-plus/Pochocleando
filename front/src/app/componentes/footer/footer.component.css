@@ -13,6 +13,9 @@ footer {
     text-align: center;
     padding: 2rem;
     margin-top: 2rem;
+    /* Reservar espacio inicial para evitar CLS cuando cargan fuentes */
+    min-height: 180px;
+    line-height: 1.5;
 }
 
 .pie {

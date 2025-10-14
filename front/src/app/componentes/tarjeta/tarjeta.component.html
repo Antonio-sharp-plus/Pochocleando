@@ -1,6 +1,6 @@
 <div class="tarjeta">
 <a [routerLink]="link">
-    <img class="poster" [src]="poster" onerror="this.src='images/notFound.png'">
+    <img class="poster" [src]="poster" onerror="this.src='images/notFound.png'" [attr.alt]="titulo + ' poster'">
     <div class="info">
         <h3 class="titulo">{{ titulo }}</h3>
         <div class="meta">
