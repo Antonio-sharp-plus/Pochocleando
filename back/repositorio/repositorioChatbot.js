@@ -9,7 +9,7 @@ async function LlamarChatBot(prompt){
         const respuesta = await model.generateContent(prompt)
         // Extraer solo el texto de la respuesta
         const textoRespuesta = respuesta.response.text()
-        console.log('Respuesta del chatbot:', textoRespuesta)
+        //console.log('Respuesta del chatbot:', textoRespuesta)
         
         return textoRespuesta
     }
