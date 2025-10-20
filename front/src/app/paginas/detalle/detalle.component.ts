@@ -89,12 +89,15 @@ export class DetalleComponent implements OnInit {
       ...(data?.flatrate || []),
     ];
 
-    const mapa = new Map<string, { name: string; logo: string }>();
+    const proveedoresExcluidos = ['Google Play Movies', 'Amazon Video'];
+
+    const mapa = new Map<string, { name: string; logo: string; url?: string }>();
     for (const p of todos) {
-      if (!p) continue;
+      if (!p || proveedoresExcluidos.includes(p.provider_name)) continue;
       mapa.set(p.provider_name, {
         name: p.provider_name,
         logo: 'https://image.tmdb.org/t/p/original' + p.logo_path,
+        url: this.providerLinks[p.provider_name] || "",
       });
     }
     return Array.from(mapa.values());
@@ -123,6 +126,34 @@ export class DetalleComponent implements OnInit {
     this.mostrarPreguntaUS = false;
     this.countryShown = '';
   }
+
+  private providerLinks: { [key: string]: string } = {
+    'Amazon Prime Video': 'https://www.primevideo.com/',
+    'Netflix': 'https://www.netflix.com/',
+    'Disney Plus': 'https://www.disneyplus.com/',
+    'Apple TV Plus': 'https://tv.apple.com/',
+    'Apple TV': 'https://tv.apple.com/',
+    'HBO Max': 'https://www.max.com/', 
+    'Star Plus': 'https://www.starplus.com/',
+    'Paramount Plus': 'https://www.paramountplus.com/',
+    'Peacock': 'https://www.peacocktv.com/',
+    'Crunchyroll': 'https://www.crunchyroll.com/',
+    'Hulu': 'https://www.hulu.com/',
+    'Movistar Play': 'https://ver.movistarplus.es/', 
+    'Claro Video': 'https://www.clarovideo.com/',
+    'Google Play Movies': 'https://play.google.com/store/movies',
+    'YouTube': 'https://www.youtube.com/movies',
+    'Apple iTunes': 'https://tv.apple.com/',
+    'Microsoft Store': 'https://www.microsoft.com/store/movies-and-tv',
+    'Rakuten TV': 'https://rakuten.tv/',
+    'Vix': 'https://vix.com/',
+    'DIRECTV GO': 'https://www.directvgo.com/',
+    'Telecine Play': 'https://globoplay.globo.com/telecine/',
+    'Pluto TV': 'https://pluto.tv/',
+    'Fandango At Home': 'https://www.fandangoathome.com',
+    'Plex': 'https://www.plex.tv'
+  };
+
 
   ngOnDestroy(): void {
     // Limpieza de la suscripción

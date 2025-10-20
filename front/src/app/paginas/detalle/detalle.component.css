@@ -450,7 +450,7 @@
   width: 80px;
   height: 80px;
   object-fit: contain;
-  border-radius: 12px;
+  border-radius: 25px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   margin-bottom: 0.5rem;
@@ -466,6 +466,10 @@
   font-weight: 600;
   margin: 0;
   overflow-wrap: break-word;
+}
+
+a {
+  text-decoration: none;
 }
 
 /* Estilos para mensaje de proveedores no disponibles */
