@@ -3,7 +3,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 async function LlamarChatBot(prompt){
     try{
-        const chatbot = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+        const chatbot = new GoogleGenerativeAI("AIzaSyCDLrxiPyZi8JYFdMYZqefgHI2ezRKv6VQ")
         const model = chatbot.getGenerativeModel({model: "gemini-2.5-flash"})
 
         const respuesta = await model.generateContent(prompt)
