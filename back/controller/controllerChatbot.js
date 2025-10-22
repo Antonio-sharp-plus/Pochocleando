@@ -2,7 +2,7 @@ const servicioChatBot = require("../service/servicioChatBot");
 
 async function LlamarChatbotController(req, res) {
     try {
-        const prompt = req.params.prompt;
+        const prompt = req.body.prompt;
         const datos = await servicioChatBot.LlamarChatBotService(prompt);
         res.json({ recomendacion: datos, prompt: prompt });    
     }

@@ -18,6 +18,6 @@ export class ChatbotService {
   constructor(private http: HttpClient) {}
 
   enviarPregunta(pregunta: string): Observable<ChatbotResponse> {
-    return this.http.get<ChatbotResponse>(`${this.apiUrl}/${encodeURIComponent(pregunta)}`);
+      return this.http.post<ChatbotResponse>(this.apiUrl, { prompt: pregunta });
   }
 }
