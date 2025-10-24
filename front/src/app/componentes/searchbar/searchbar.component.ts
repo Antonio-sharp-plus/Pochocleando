@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { debounceTime, Subject, switchMap, filter } from 'rxjs';
+import { debounceTime, Subject, switchMap, filter, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ApiGeneral, ApiService, SeriesService } from '../../servicios/api.service';
 
@@ -30,34 +30,40 @@ export class SearchbarComponent implements OnInit {
     this.busquedaSubject.pipe(
       debounceTime(300),
       switchMap((nombreBuscado) => {
-        if (!nombreBuscado.trim()) return [];
+        const termino = nombreBuscado.trim();
+
+        if (!termino) {
+          // si está vacío, emitimos un array vacío
+          return of([]);
+        }
 
         switch (this.tipoBusqueda) {
           case 'pelicula':
             //console.log(`se buscó ${nombreBuscado}`)
-            return this.apiPeliculas.buscarPelicula(nombreBuscado);
+            return this.apiPeliculas.buscarPelicula(termino);
           case 'series':
-            return this.apiSeries.buscarSerie(nombreBuscado);
+            return this.apiSeries.buscarSerie(termino);
           case 'ambos':
           default:
-            return this.apiGeneral.BusquedaGeneral(nombreBuscado);
+            return this.apiGeneral.BusquedaGeneral(termino);
       }
       })
-    ).subscribe((resultados: any[]) => {
-      this.resultados.emit(resultados);
+    ).subscribe((resultados: any[] | null) => {
+      if (resultados) {
+        this.resultados.emit(resultados);
+      }
     });
   }
 
   onEscribir(): void {
-    if (this.busqueda.trim()) {
-      this.busquedaSubject.next(this.busqueda);
-      this.busquedaUsuario.emit(this.busqueda);
-    }
+    this.busquedaSubject.next(this.busqueda);
+    this.busquedaUsuario.emit(this.busqueda);
   }
 
   onSubmit(event: Event): void {
     event.preventDefault();
-    this.onEscribir();
+    this.busquedaSubject.next(this.busqueda);
+    this.busquedaUsuario.emit(this.busqueda);
   }
 
 }

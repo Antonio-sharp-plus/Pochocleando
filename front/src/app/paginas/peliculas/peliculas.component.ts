@@ -15,6 +15,7 @@ import { SearchbarComponent } from '../../componentes/searchbar/searchbar.compon
 export class PeliculasComponent implements OnInit{
 
   datos: any[] = [];
+  datosOriginales: any[] = [];
   tituloSeccion = "Películas populares";
   tipo = 'movie';
   paginaActual: number = 1;
@@ -46,7 +47,10 @@ export class PeliculasComponent implements OnInit{
     this.categoriaActual = 'populares';
     this.paginaActual = page;
 
-    this.apiService.getPeliculasPopulares(page).subscribe(data => this.datos = data);
+    this.apiService.getPeliculasPopulares(page).subscribe(data => {
+      this.datos = data;
+      this.datosOriginales = Array.isArray(data) ? [...data] : [];
+    });
   }
 
   async PeliculasMejorValoradas(boton: number, page: number = 1): Promise<void>{
@@ -57,7 +61,10 @@ export class PeliculasComponent implements OnInit{
 
     this.cambiarColorBoton(boton);
 
-    this.apiService.getPeliculasMejorValoradas(page).subscribe(data => this.datos = data);
+    this.apiService.getPeliculasMejorValoradas(page).subscribe(data => {
+      this.datos = data;
+      this.datosOriginales = Array.isArray(data) ? [...data] : [];
+    });
   }
 
   async PelisEstreno(boton: number, page: number = 1): Promise<void>{
@@ -68,7 +75,10 @@ export class PeliculasComponent implements OnInit{
 
     this.cambiarColorBoton(boton);
 
-    this.apiService.getPeliculasEstreno(page).subscribe(data => this.datos = data);
+    this.apiService.getPeliculasEstreno(page).subscribe(data => {
+      this.datos = data;
+      this.datosOriginales = Array.isArray(data) ? [...data] : [];
+    });
   }
 
   async PelisAccion(boton: number, page: number = 1): Promise<void>{
@@ -79,7 +89,10 @@ export class PeliculasComponent implements OnInit{
 
     this.cambiarColorBoton(boton);
 
-    this.apiService.getPeliculasAccion(page).subscribe(data => this.datos = data);
+    this.apiService.getPeliculasAccion(page).subscribe(data => {
+      this.datos = data;
+      this.datosOriginales = Array.isArray(data) ? [...data] : [];
+    });
   }
 
   async PeliculasComedia(boton: number, page: number = 1): Promise<void>{
@@ -90,7 +103,10 @@ export class PeliculasComponent implements OnInit{
 
     this.cambiarColorBoton(boton);
 
-    this.apiService.getPeliculasComedia(page).subscribe(data => this.datos = data);
+    this.apiService.getPeliculasComedia(page).subscribe(data => {
+      this.datos = data;
+      this.datosOriginales = Array.isArray(data) ? [...data] : [];
+    });
   }
 
   async PelisDrama(boton: number, page: number = 1): Promise<void>{
@@ -101,7 +117,10 @@ export class PeliculasComponent implements OnInit{
 
     this.cambiarColorBoton(boton);
 
-    this.apiService.getPeliculasDrama(page).subscribe(data => this.datos = data);
+    this.apiService.getPeliculasDrama(page).subscribe(data => {
+      this.datos = data;
+      this.datosOriginales = Array.isArray(data) ? [...data] : [];
+    });
   }
 
     async PelisCiencia(boton: number, page: number = 1): Promise<void>{
@@ -112,7 +131,10 @@ export class PeliculasComponent implements OnInit{
 
     this.cambiarColorBoton(boton);
 
-    this.apiService.getPeliculasSciFi(page).subscribe(data => this.datos = data);
+    this.apiService.getPeliculasSciFi(page).subscribe(data => {
+      this.datos = data;
+      this.datosOriginales = Array.isArray(data) ? [...data] : [];
+    });
   }
 
   cambiarColorBoton(boton: number): void {
@@ -123,11 +145,47 @@ export class PeliculasComponent implements OnInit{
   }
   
   procesarResultados(resultados: any[]) {
-    this.datos = resultados;
+    if (resultados && resultados.length > 0) {
+      this.datos = resultados;
+    } else {
+      this.datos = this.datosOriginales;
+      this.restaurarTituloCategoria();
+    }
   }
 
   actualizarTituloBusqueda(busqueda: string): void {
-    this.tituloSeccion = `Resultados para "${busqueda}"`;
+    if (busqueda && busqueda.trim()) {
+      this.tituloSeccion = `Resultados para "${busqueda}"`;
+    } else {
+      this.datos = this.datosOriginales;
+      this.restaurarTituloCategoria();
+    }
+  }
+
+  restaurarTituloCategoria(): void {
+    switch (this.categoriaActual) {
+      case 'populares':
+        this.tituloSeccion = "Películas populares";
+        break;
+      case 'valoradas':
+        this.tituloSeccion = "Películas mejor valoradas";
+        break;
+      case 'estrenos':
+        this.tituloSeccion = "Estrenos";
+        break;
+      case 'accion':
+        this.tituloSeccion = "Películas de acción";
+        break;
+      case 'comedia':
+        this.tituloSeccion = "Películas de comedia";
+        break;
+      case 'drama':
+        this.tituloSeccion = "Películas de drama";
+        break;
+      case 'ciencia':
+        this.tituloSeccion = "Películas de ciencia ficción";
+        break;
+    }
   }
 
   irAPagina(page: number) {

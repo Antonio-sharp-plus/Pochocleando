@@ -16,6 +16,7 @@ import { SearchbarComponent } from '../../componentes/searchbar/searchbar.compon
 export class HomeComponent implements OnInit {
   datos: any = [{}];
   tituloSeccion = "Lo más popular"
+  datosOriginales: any[] = [];
 
   constructor(
     private snackBar: MatSnackBar, 
@@ -23,15 +24,30 @@ export class HomeComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.apiGeneral.getTrending().subscribe(data => this.datos = data);
+    this.apiGeneral.getTrending().subscribe(data => {
+      this.datos = data;
+      this.datosOriginales = Array.isArray(data) ? [...data] : []; // guardamos una copia original
+    });
   }
 
   procesarResultados(resultados: any[]) {
-    this.datos = resultados;
+    if (resultados && resultados.length > 0) {
+      this.datos = resultados;
+    } else {
+      // si no hay resultados (por ejemplo, búsqueda vacía)
+      this.datos = this.datosOriginales;
+      this.tituloSeccion = "Lo más popular";
+    }
   }
 
   actualizarTituloBusqueda(busqueda: string): void {
-    this.tituloSeccion = `Resultados para "${busqueda}"`;
+    if (busqueda && busqueda.trim()) {
+      this.tituloSeccion = `Resultados para "${busqueda}"`;
+    } else {
+      // cuando el campo queda vacío -> restaurar originales y título
+      this.tituloSeccion = "Lo más popular";
+      this.datos = this.datosOriginales;
+    }
   }
 
 }

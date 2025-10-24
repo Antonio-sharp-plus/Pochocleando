@@ -15,6 +15,7 @@ import { SearchbarComponent } from '../../componentes/searchbar/searchbar.compon
 export class SeriesComponent implements OnInit{
 
   datos: any = [{}]; 
+  datosOriginales: any[] = [];
   tituloSeccion = "Series populares";
   tipo = 'tv';
 
@@ -28,7 +29,10 @@ export class SeriesComponent implements OnInit{
   ) {}
 
   async ngOnInit() {
-    this.seriesService.getSeriesPopulares(1).subscribe(data => this.datos = data);
+    this.seriesService.getSeriesPopulares(1).subscribe(data => {
+      this.datos = data;
+      this.datosOriginales = data; // guardamos la copia original
+    });
   }
 
   botones = ["filter-btn active", "filter-btn", "filter-btn", "filter-btn", "filter-btn", "filter-btn", "filter-btn"]
@@ -44,7 +48,10 @@ export class SeriesComponent implements OnInit{
     this.categoriaActual = 'populares';
     this.paginaActual = page;
 
-    this.seriesService.getSeriesPopulares(page).subscribe(data => this.datos = data);
+    this.seriesService.getSeriesPopulares(page).subscribe(data => {
+      this.datos = data;
+      this.datosOriginales = data;
+    });
   }
 
   async SeriesMejorValoradas(boton: number, page: number = 1): Promise<void>{
@@ -58,7 +65,10 @@ export class SeriesComponent implements OnInit{
     this.categoriaActual = 'valoradas';
     this.paginaActual = page;
 
-   this.seriesService.getSeriesValoradas(page).subscribe(data => this.datos = data);
+   this.seriesService.getSeriesValoradas(page).subscribe(data => {
+      this.datos = data;
+      this.datosOriginales = data;
+    });
   }
 
   async SeriesComedia(boton: number, page: number = 1): Promise<void>{
@@ -72,7 +82,10 @@ export class SeriesComponent implements OnInit{
     this.categoriaActual = 'comedia';
     this.paginaActual = page;
 
-    this.seriesService.getSeriesComedia(page).subscribe(data => this.datos = data);
+    this.seriesService.getSeriesComedia(page).subscribe(data => {
+      this.datos = data;
+      this.datosOriginales = data;
+    });
   }
 
   async SeriesDrama(boton: number, page: number = 1): Promise<void>{
@@ -86,15 +99,28 @@ export class SeriesComponent implements OnInit{
     this.categoriaActual = 'drama';
     this.paginaActual = page;
 
-   this.seriesService.getSeriesDrama(page).subscribe(data => this.datos = data);
+   this.seriesService.getSeriesDrama(page).subscribe(data => {
+      this.datos = data;
+      this.datosOriginales = data;
+    });
   }
   
   procesarResultados(resultados: any[]) {
-    this.datos = resultados;
+    if (resultados && resultados.length > 0) {
+      this.datos = resultados;
+    } else {
+      // si no hay resultados o búsqueda vacía, restauramos los originales
+      this.datos = this.datosOriginales;
+      this.tituloSeccion = "Series populares";
+    }
   }
 
   actualizarTituloBusqueda(busqueda: string): void {
-    this.tituloSeccion = `Resultados para "${busqueda}"`;
+    if (busqueda.trim()) {
+      this.tituloSeccion = `Resultados para "${busqueda}"`;
+    } else {
+      this.tituloSeccion = "Series populares";
+    }
   }
 
     irAPagina(page: number) {
