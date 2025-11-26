@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { debounceTime, Subject, switchMap, filter, of } from 'rxjs';
+import { debounceTime, Subject, switchMap, of, catchError } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ApiGeneral, ApiService, SeriesService } from '../../servicios/api.service';
 
@@ -46,7 +46,12 @@ export class SearchbarComponent implements OnInit {
           case 'ambos':
           default:
             return this.apiGeneral.BusquedaGeneral(termino);
-      }
+        }
+      }),
+      // Evitamos que un error en una búsqueda rompa el stream y deje de funcionar la barra
+      catchError((error) => {
+        console.error('Error en la búsqueda:', error);
+        return of([]);
       })
     ).subscribe((resultados: any[] | null) => {
       if (resultados) {

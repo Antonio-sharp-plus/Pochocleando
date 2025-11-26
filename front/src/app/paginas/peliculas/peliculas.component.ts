@@ -17,6 +17,8 @@ export class PeliculasComponent implements OnInit{
   datos: any[] = [];
   datosOriginales: any[] = [];
   tituloSeccion = "Películas populares";
+  sinResultados: boolean = false;
+  ultimaBusqueda: string = '';
   tipo = 'movie';
   paginaActual: number = 1;
   totalPaginas: number = 10;
@@ -146,18 +148,36 @@ export class PeliculasComponent implements OnInit{
   
   procesarResultados(resultados: any[]) {
     if (resultados && resultados.length > 0) {
+      // Hay resultados de búsqueda
       this.datos = resultados;
+      this.sinResultados = false;
     } else {
-      this.datos = this.datosOriginales;
-      this.restaurarTituloCategoria();
+      // No hay resultados devueltos por la búsqueda
+      if (this.ultimaBusqueda && this.ultimaBusqueda.trim()) {
+        // Hubo una búsqueda concreta (ej: "Ted Lasso") pero no coincidencias en películas
+        this.datos = [];
+        this.sinResultados = true;
+        // Cambiamos el título para indicar que no hubo resultados
+        this.tituloSeccion = `Sin resultados para "${this.ultimaBusqueda}"`;
+      } else {
+        // Campo de búsqueda vacío / restaurar estado original
+        this.datos = this.datosOriginales;
+        this.sinResultados = false;
+        this.restaurarTituloCategoria();
+      }
     }
   }
 
   actualizarTituloBusqueda(busqueda: string): void {
+    this.ultimaBusqueda = busqueda;
+
     if (busqueda && busqueda.trim()) {
+      this.sinResultados = false;
       this.tituloSeccion = `Resultados para "${busqueda}"`;
     } else {
+      // Cuando se limpia la búsqueda, restauramos las películas originales
       this.datos = this.datosOriginales;
+      this.sinResultados = false;
       this.restaurarTituloCategoria();
     }
   }

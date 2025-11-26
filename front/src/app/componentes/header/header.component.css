@@ -98,7 +98,8 @@ a:active {
 /* CELULAR: Solo se aplica en pantallas de 768px o menos */
 @media screen and (max-width: 768px) {
     header {
-        padding: 0.5rem 1rem;
+        padding: 0.25rem 1rem;
+        height: 100px; /* header menos alto en mobile */
     }
 
     .header-container {
@@ -112,10 +113,9 @@ a:active {
 
     .btn-dislexia.mobile {
         display: flex;
-        position: absolute;
-        right: 2.5rem; /* margen izquierdo */
-        top: 3.2rem;
-        transform: translateY(-50%);
+        position: static;          /* que participe del flujo flex */
+        margin-right: 0.5rem;      /* pequeño espacio respecto al menú */
+        align-items: center;       /* centra el icono verticalmente */
         z-index: 1500;
     }
 
@@ -126,11 +126,13 @@ a:active {
     /* cc para mostrar boton hamburguesa */
     .menu-toggle{
         display: flex;
-        margin-bottom: 8px;
     }
+
     .div-menu {
-        align-self: end;
-        margin-left: auto;
+        display: flex;
+        align-items: center;
+        margin-left: auto;   /* empuja el grupo dislexia + menú hacia la derecha */
+        gap: 0.5rem;         /* separación horizontal entre dislexia y hamburguesa */
     }
    
 
@@ -180,6 +182,7 @@ a:active {
     }
     
     header {
-        padding: 0.5rem 0.5rem;
+        padding: 0.25rem 0.5rem;
+        height: 80px; /* aún más compacto en móviles muy chicos */
     }
 }

@@ -58,17 +58,17 @@
     <h2 class="titulo-seccion">{{ tituloSeccion }}</h2>
 
     <div class="tarjeta-grid">
-    @for (dato of datos; track dato.id) {
-        <app-tarjeta
-          [id]="dato.id"
-          [tipo]="tipo"
-          [titulo]="dato.title ?? dato.name"
-          [anio]="(dato.release_date ?? dato.first_air_date) | date : 'yyyy'"
-          [puntuacion]="dato.vote_average"
-          [poster]="'https://image.tmdb.org/t/p/w500' + dato.poster_path"
-        ></app-tarjeta>
-    }
-  </div>
+      @for (dato of datos; track dato.id) {
+          <app-tarjeta
+            [id]="dato.id"
+            [tipo]="tipo"
+            [titulo]="dato.title ?? dato.name"
+            [anio]="(dato.release_date ?? dato.first_air_date) | date : 'yyyy'"
+            [puntuacion]="dato.vote_average"
+            [poster]="'https://image.tmdb.org/t/p/w500' + dato.poster_path"
+          ></app-tarjeta>
+      }
+    </div>
 </section>
 
 <div class="paginacion">

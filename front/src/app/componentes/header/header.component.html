@@ -4,18 +4,19 @@
         <div class="logo-pochi">
             <a routerLink="/"><img src="\images\logo.png" class="logo" alt="logo de pochocleando"></a>
         </div>
-        
-        <!-- Botón de dislexia para mobile -->
-        <button class="btn-dislexia mobile" (click)="toggleDislexia()">
-            <img src="/images/dislexia.png" alt="Dislexia" />
-        </button>
 
-        <!-- Botón hamburguesa -->
-         <div class="div-menu">
+        <!-- Contenedor derecho: botón dislexia (mobile) + hamburguesa -->
+        <div class="div-menu">
+            <!-- Botón de dislexia para mobile -->
+            <button class="btn-dislexia mobile" (click)="toggleDislexia()">
+                <img src="/images/dislexia.png" alt="Dislexia" />
+            </button>
+
+            <!-- Botón hamburguesa -->
             <button class="menu-toggle" (click)="toggleMenu()">
                 ☰
             </button>
-         </div>
+        </div>
 
         <nav>
             <ul [class.active]="menuActive">

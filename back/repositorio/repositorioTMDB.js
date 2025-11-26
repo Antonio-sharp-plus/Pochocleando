@@ -8,15 +8,17 @@ async function BuscarId(id, tipo){
 }
 
 async function BusquedaGeneral(tipo, query) {
+    // Aseguramos que la query esté correctamente codificada para soportar espacios y caracteres especiales
+    const encodedQuery = encodeURIComponent(query || '');
 
     if (tipo === "peliculas") {
-        const response = await fetch(`${base_url}/search/movie?query=${query}&api_key=${api_key}&language=${lenguaje}`)
+        const response = await fetch(`${base_url}/search/movie?query=${encodedQuery}&api_key=${api_key}&language=${lenguaje}`)
         return response.json();
     } else if (tipo === "series") {
-        const response = await fetch(`${base_url}/search/tv?query=${query}&api_key=${api_key}&language=${lenguaje}`)
+        const response = await fetch(`${base_url}/search/tv?query=${encodedQuery}&api_key=${api_key}&language=${lenguaje}`)
         return response.json();
     } else {
-        const response = await fetch(`${base_url}/search/multi?query=${query}&api_key=${api_key}&language=${lenguaje}`)
+        const response = await fetch(`${base_url}/search/multi?query=${encodedQuery}&api_key=${api_key}&language=${lenguaje}`)
         return response.json();
     }
 

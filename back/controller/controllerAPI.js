@@ -33,7 +33,7 @@ async function Trending(req, res) {
     }
 }
 
-async function BuscarPelículas(req, res, nombre) {
+async function BuscarPelículas(req, res) {
     try {
         const nombre = req.params.nombre;
         const datos = await servicioTMDB.BuscarPelículas(nombre);
@@ -44,7 +44,7 @@ async function BuscarPelículas(req, res, nombre) {
     }
 }
 
-async function BuscarSeries(req, res, nombre) {
+async function BuscarSeries(req, res) {
     try {
         const nombre = req.params.nombre;
         const datos = await servicioTMDB.BuscarSeries(nombre);
