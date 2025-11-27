@@ -14,7 +14,8 @@ async function BuscarId(req, res){
 
 async function BuscarTodo(req, res) {
     try {
-        const nombre = req.params.nombre;
+        // 🟢 CAMBIO: Leer de req.query en lugar de req.params
+        const nombre = req.query.nombre; 
         const datos = await servicioTMDB.BuscarTodo(nombre);
         res.json(datos);
     }
@@ -33,9 +34,10 @@ async function Trending(req, res) {
     }
 }
 
-async function BuscarPelículas(req, res, nombre) {
+async function BuscarPelículas(req, res) { 
     try {
-        const nombre = req.params.nombre;
+        // 🟢 CAMBIO: Leer de req.query en lugar de req.params
+        const nombre = req.query.nombre; 
         const datos = await servicioTMDB.BuscarPelículas(nombre);
         res.json(datos);
     }
@@ -44,9 +46,10 @@ async function BuscarPelículas(req, res, nombre) {
     }
 }
 
-async function BuscarSeries(req, res, nombre) {
+async function BuscarSeries(req, res) { 
     try {
-        const nombre = req.params.nombre;
+        // 🟢 CAMBIO: Leer de req.query en lugar de req.params
+        const nombre = req.query.nombre; 
         const datos = await servicioTMDB.BuscarSeries(nombre);
         res.json(datos);
     }

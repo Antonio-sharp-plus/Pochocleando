@@ -16,10 +16,12 @@ export class ApiGeneral {
   }
 
   BusquedaGeneral(nombre: string): Observable<any> {
-    // 🟢 CAMBIO AQUÍ: codificamos el nombre
-    const nombreCodificado = encodeURIComponent(nombre);
-    return this.http.get(`${environment.apiUrl}/buscar/${nombreCodificado}`);
-  }
+        // 🟢 CAMBIO: Usar Query Parameters (?q=...) en lugar de Path Parameters (/nombre)
+        return this.http.get(`${environment.apiUrl}/buscar`, {
+            params: { nombre: nombre } // HttpClient codifica el 'nombre' automáticamente
+        });
+        // La URL generada será: .../api/buscar?nombre=el%20extra%C3%B1o
+    }
 
   BusquedaId(id: string, tipo: string): Observable<any> {
     return this.http.get(`${environment.apiUrl}/buscarid/${id}/${tipo}`);
@@ -48,12 +50,14 @@ export class ApiService {
 
   // filtro: BUSCAR POR NOMBRE
   buscarPelicula(nombre: string): Observable<any> {
-    console.log(`api.service.ts recibió: ${nombre}`);
-    
-    // 🟢 CAMBIO AQUÍ: codificamos el nombre
-    const nombreCodificado = encodeURIComponent(nombre);
-    return this.http.get(`${this.apiGateway}/buscar/${nombreCodificado}`);
-  }
+        console.log(`api.service.ts recibió: ${nombre}`);
+        
+        // 🟢 CAMBIO: Usar Query Parameters
+        return this.http.get(`${this.apiGateway}/buscar`, {
+            params: { nombre: nombre }
+        });
+        // La URL generada será: .../pelicula/buscar?nombre=el%20extra%C3%B1o
+    }
 
   // filtro: ACCIÓN
   getPeliculasAccion(page: number): Observable<any> {
@@ -114,8 +118,11 @@ export class SeriesService {
 
   // filtro: BUSCAR POR NOMBRE
   buscarSerie(nombre: string): Observable<any> {
-    // 🟢 CAMBIO AQUÍ: codificamos el nombre
-    const nombreCodificado = encodeURIComponent(nombre);
-    return this.http.get(`${this.apiGateway}/buscar/${nombreCodificado}`);
-  }
+        
+        // 🟢 CAMBIO: Usar Query Parameters
+        return this.http.get(`${this.apiGateway}/buscar`, {
+            params: { nombre: nombre }
+        });
+        // La URL generada será: .../series/buscar?nombre=el%20extra%C3%B1o
+    }
 }
