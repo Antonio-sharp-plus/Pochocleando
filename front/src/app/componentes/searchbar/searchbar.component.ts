@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { debounceTime, Subject, switchMap, filter, of } from 'rxjs';
+import { debounceTime, Subject, switchMap, of, catchError } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ApiGeneral, ApiService, SeriesService } from '../../servicios/api.service';
 
@@ -26,38 +26,53 @@ export class SearchbarComponent implements OnInit {
     private apiSeries: SeriesService) {}
 
   ngOnInit(): void {
-
     this.busquedaSubject.pipe(
       debounceTime(300),
       switchMap((nombreBuscado) => {
-        const termino = nombreBuscado.trim();
+        if (!nombreBuscado.trim()) return of([]);
 
-        if (!termino) {
-          // si está vacío, emitimos un array vacío
-          return of([]);
-        }
+        let peticion;
 
+        // Seleccionamos la petición correspondiente
         switch (this.tipoBusqueda) {
           case 'pelicula':
-            //console.log(`se buscó ${nombreBuscado}`)
-            return this.apiPeliculas.buscarPelicula(termino);
+            peticion = this.apiPeliculas.buscarPelicula(nombreBuscado);
+            break;
           case 'series':
-            return this.apiSeries.buscarSerie(termino);
+            peticion = this.apiSeries.buscarSerie(nombreBuscado);
+            break;
           case 'ambos':
           default:
-            return this.apiGeneral.BusquedaGeneral(termino);
-      }
+            peticion = this.apiGeneral.BusquedaGeneral(nombreBuscado);
+            break;
+        }
+
+        // Añadimos un pipe interno a la petición. Si falla, retornamos array vacío.
+        return peticion.pipe(
+          catchError(error => {
+            console.error('Error en la búsqueda:', error);
+            return of([]); // Retorna array vacío en vez de matar el flujo
+          })
+        );
       })
-    ).subscribe((resultados: any[] | null) => {
-      if (resultados) {
+    ).subscribe((resultados: any[]) => {
+      if (this.busqueda.trim()) {
         this.resultados.emit(resultados);
       }
     });
   }
 
   onEscribir(): void {
-    this.busquedaSubject.next(this.busqueda);
-    this.busquedaUsuario.emit(this.busqueda);
+    const valor = this.busqueda.trim();
+  
+    this.busquedaSubject.next(valor);
+
+    if (valor) {
+      this.busquedaUsuario.emit(valor);
+    } else {
+      this.resultados.emit([]);            // limpia resultados visualmente
+      this.busquedaUsuario.emit('');       // avisa al padre para cargar Populares
+    }
   }
 
   onSubmit(event: Event): void {

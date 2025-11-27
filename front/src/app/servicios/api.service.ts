@@ -16,7 +16,9 @@ export class ApiGeneral {
   }
 
   BusquedaGeneral(nombre: string): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/buscar/${nombre}`);
+    // 🟢 CAMBIO AQUÍ: codificamos el nombre
+    const nombreCodificado = encodeURIComponent(nombre);
+    return this.http.get(`${environment.apiUrl}/buscar/${nombreCodificado}`);
   }
 
   BusquedaId(id: string, tipo: string): Observable<any> {
@@ -46,8 +48,11 @@ export class ApiService {
 
   // filtro: BUSCAR POR NOMBRE
   buscarPelicula(nombre: string): Observable<any> {
-    console.log(`api.service.ts recibió ${nombre}`);
-    return this.http.get(`${this.apiGateway}/buscar/${nombre}`);
+    console.log(`api.service.ts recibió: ${nombre}`);
+    
+    // 🟢 CAMBIO AQUÍ: codificamos el nombre
+    const nombreCodificado = encodeURIComponent(nombre);
+    return this.http.get(`${this.apiGateway}/buscar/${nombreCodificado}`);
   }
 
   // filtro: ACCIÓN
@@ -109,6 +114,8 @@ export class SeriesService {
 
   // filtro: BUSCAR POR NOMBRE
   buscarSerie(nombre: string): Observable<any> {
-    return this.http.get(`${this.apiGateway}/buscar/${nombre}`);
+    // 🟢 CAMBIO AQUÍ: codificamos el nombre
+    const nombreCodificado = encodeURIComponent(nombre);
+    return this.http.get(`${this.apiGateway}/buscar/${nombreCodificado}`);
   }
 }
