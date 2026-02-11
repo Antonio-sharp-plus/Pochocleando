@@ -21,13 +21,12 @@ const chatbotRouter = require('./router/routerChatbot');
 
 // en process.env.PORT está el puerto definido automáticamente por Beanstalk
 const port = process.env.PORT || 3000;
+const nombre_db = process.env.MONGO_NAME;
+const contra_db = process.env.MONGO_PASSWORD;
 
 // comento HOSTNAME para evitar conflictos con Beanstalk
 // descomentar en caso de presentar para BACKEND
 // const HOSTNAME = '127.0.0.1';
-
-const nombre_db = "mongooseAntonio";
-const contra_db = "GSpjHIlsTDhb1H0c";
 
 const connection_string = `mongodb+srv://${nombre_db}:${contra_db}@pochocleando.axbmjib.mongodb.net/pochocleando`;
 
