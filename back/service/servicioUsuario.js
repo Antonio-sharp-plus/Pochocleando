@@ -51,7 +51,6 @@ exports.enviarEmailRecuperacion = async (email) => {
   await repositorioUsuarios.actualizarTokenRecuperacion(email, token, expiracion);
 
   // 3. Enviar email
-  const { email } = req.body;
   try{
       await resend.emails.send({
       from: 'onboarding@resend.dev', // temporal mientras no verifiques dominio
