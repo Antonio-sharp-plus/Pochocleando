@@ -2,5 +2,5 @@
 
 export const environment = {
   production: true,
-  apiUrl: 'proyecto-pochocleando-production.up.railway.app',
+  apiUrl: 'https://proyecto-pochocleando-production.up.railway.app',
 };
