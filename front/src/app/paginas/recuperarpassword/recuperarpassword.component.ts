@@ -43,7 +43,7 @@ export class RecuperarpasswordComponent {
     }
 
     this.http
-      .post(`${this.apiGateway}/auth/reset-password`, {
+      .post(`${this.apiGateway}/reset-password`, {
         token: this.token,
         password: this.nuevaPassword,
       })

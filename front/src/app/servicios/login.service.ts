@@ -57,6 +57,6 @@ export class LoginService {
     return this.userSubject.asObservable();
   }
   solicitarRecuperacion(email: string) {
-    return this.http.post(`${this.apiGateway}/auth/forgot-password`, { email });
+    return this.http.post(`${this.apiGateway}/forgot-password`, { email });
   }
 }
