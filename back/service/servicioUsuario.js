@@ -11,7 +11,7 @@ const mail_user = process.env.MAIL_USER
 const mail_password = process.env.MAIL_PASSWORD
 
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_KEY);
 
 exports.registrarUsuario = async (data) => {
   try {
