@@ -28,7 +28,7 @@ const server_cloudflare = process.env.CLOUDFLARE
 
 // comento HOSTNAME para evitar conflictos con Beanstalk
 // descomentar en caso de presentar para BACKEND
-// const HOSTNAME = '127.0.0.1';
+const HOSTNAME = '127.0.0.1';
 
 const connection_string = `mongodb+srv://${nombre_db}:${contra_db}@pochocleando.axbmjib.mongodb.net/pochocleando`;
 
@@ -69,9 +69,9 @@ app.use((err, req, res, next) => {
 // ATENCIÓN
 // este app.listen es tal como vimos en BACKEND, pero es necesario cambiarlo para NUBE
 // descomentarlo en caso de querer presentar el trabajo en BACKEND
-// app.listen(PORT, HOSTNAME, () => {
-//   console.log(`Servidor en http://${HOSTNAME}:${PORT}/`);
-// });
+//app.listen(port, HOSTNAME, () => {
+//  console.log(`Servidor en http://${HOSTNAME}:${port}/`);
+//});
 
 
 // ATENCIÓN
