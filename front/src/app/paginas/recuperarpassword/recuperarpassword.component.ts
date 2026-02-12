@@ -4,13 +4,17 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import { environment } from '../../../environments/environment';
+
 @Component({
   selector: 'app-recuperarpassword',
   templateUrl: './recuperarpassword.component.html',
   imports: [CommonModule, FormsModule],
-  styleUrls: ['./recuperarpassword.component.css']
+  styleUrls: ['./recuperarpassword.component.css'],
 })
 export class RecuperarpasswordComponent {
+  private apiGateway = environment.apiUrl + '/auth';
+
   nuevaPassword: string = '';
   confirmarPassword: string = '';
   token: string = '';
@@ -20,7 +24,7 @@ export class RecuperarpasswordComponent {
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -38,21 +42,26 @@ export class RecuperarpasswordComponent {
       return;
     }
 
-    this.http.post('http://localhost:3000/api/auth/reset-password', {
-      token: this.token,
-      password: this.nuevaPassword
-    }).subscribe({
-      next: () => {
-        this.mensaje = ' Contraseña restablecida con éxito. Redirigiendo al login...';
-        this.error = '';
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 3000);
-      },
-      error: err => {
-        this.error = err.error?.error || 'Ocurrió un error al restablecer la contraseña.';
-        this.mensaje = '';
-      }
-    });
+    this.http
+      .post(`${this.apiGateway}/auth/reset-password`, {
+        token: this.token,
+        password: this.nuevaPassword,
+      })
+      .subscribe({
+        next: () => {
+          this.mensaje =
+            ' Contraseña restablecida con éxito. Redirigiendo al login...';
+          this.error = '';
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 3000);
+        },
+        error: (err) => {
+          this.error =
+            err.error?.error ||
+            'Ocurrió un error al restablecer la contraseña.';
+          this.mensaje = '';
+        },
+      });
   }
 }

@@ -12,32 +12,31 @@ interface AuthResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoginService {
-  
-
-  private apiGateway = environment.apiUrl + '/auth'
+  private apiGateway = environment.apiUrl + '/auth';
 
   private userSubject = new BehaviorSubject<AuthResponse | null>(null);
 
   constructor(private http: HttpClient) {
-  const token = localStorage.getItem('token');
-  const usuario = localStorage.getItem('usuario');
-  if (token && usuario) {
-    this.userSubject.next({ token, usuario: JSON.parse(usuario) });
+    const token = localStorage.getItem('token');
+    const usuario = localStorage.getItem('usuario');
+    if (token && usuario) {
+      this.userSubject.next({ token, usuario: JSON.parse(usuario) });
+    }
   }
-}
 
   iniciarSesion(email: string, password: string): Observable<AuthResponse> {
-  return this.http.post<AuthResponse>(`${this.apiGateway}/login`, { email, password })
-    .pipe(
-      tap(response => {
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('usuario', JSON.stringify(response.usuario));
-        this.userSubject.next(response);
-      })
-    );
+    return this.http
+      .post<AuthResponse>(`${this.apiGateway}/login`, { email, password })
+      .pipe(
+        tap((response) => {
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('usuario', JSON.stringify(response.usuario));
+          this.userSubject.next(response);
+        }),
+      );
   }
 
   logout(): void {
@@ -58,6 +57,6 @@ export class LoginService {
     return this.userSubject.asObservable();
   }
   solicitarRecuperacion(email: string) {
-  return this.http.post('http://localhost:3000/api/auth/forgot-password', { email });
-}
+    return this.http.post(`${this.apiGateway}/auth/forgot-password`, { email });
+  }
 }
