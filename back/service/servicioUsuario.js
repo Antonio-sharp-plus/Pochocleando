@@ -56,8 +56,12 @@ exports.enviarEmailRecuperacion = async (email) => {
   await resend.emails.send({
     from: 'onboarding@resend.dev',
     to: email,
-    subject: 'Reset your password',
-    html: `<p>Click here to reset your password</p>`
+    subject: 'Recupera tu contraseña de Pochocleando!!',
+    html: `
+      <p>Click here to reset your password</p>
+      <a href="${server_cloudflare}/recuperarpassword?token=${token}">Restablecer contraseña</a>
+      <p>Si no solicitaste este cambio, ignorá este mensaje.</p>
+    `
   });
 };
 
