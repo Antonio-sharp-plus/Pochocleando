@@ -23,6 +23,8 @@ const chatbotRouter = require('./router/routerChatbot');
 const port = process.env.PORT || 3000;
 const nombre_db = process.env.MONGO_NAME;
 const contra_db = process.env.MONGO_PASSWORD;
+const server_cloudflare = process.env.CLOUDFLARE
+
 
 // comento HOSTNAME para evitar conflictos con Beanstalk
 // descomentar en caso de presentar para BACKEND
@@ -33,7 +35,7 @@ const connection_string = `mongodb+srv://${nombre_db}:${contra_db}@pochocleando.
 app.use(cors({
   // * no es recomendable en producción
   // en un array colocar el dominio de amplify y luego http://localhost:4200
-  origin: ['https://pochocleando.com.ar', 'http://localhost:4200', 'https://ddce1286.proyecto---pochocleando.pages.dev/'],
+  origin: ['https://pochocleando.com.ar', 'http://localhost:4200', server_cloudflare],
   methods: ['GET', 'POST', 'PUT', 'DELETE'], 
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
