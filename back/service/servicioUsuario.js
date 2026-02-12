@@ -41,29 +41,24 @@ exports.buscarUsuarioPorEmail = async (email) => {
 
 exports.enviarEmailRecuperacion = async (email) => {
   const usuario = await repositorioUsuarios.buscarUsuarioPorEmail(email);
-  if (!usuario) throw new Error('Usuario no encontrado');
 
-  // 1. Generar token
+  if (!usuario) {
+    // Para seguridad, NO lanzar error.
+    // Simplemente salir.
+    return;
+  }
+
   const token = crypto.randomBytes(20).toString('hex');
-  const expiracion = Date.now() + 3600000; // 1 hora
+  const expiracion = Date.now() + 3600000;
 
-  // 2. Guardar token en la DB
   await repositorioUsuarios.actualizarTokenRecuperacion(email, token, expiracion);
 
-  // 3. Enviar email
-  try{
-      await resend.emails.send({
-      from: 'onboarding@resend.dev', // temporal mientras no verifiques dominio
-      to: email,
-      subject: 'Reset your password',
-      html: `<p>Click here to reset your password</p>`
-      });
-
-      return res.status(204).send();
-    } catch (error) {
-      console.error("Email error:", error);
-      return res.status(500).json({ error: "Failed to send email" });
-    }
+  await resend.emails.send({
+    from: 'onboarding@resend.dev',
+    to: email,
+    subject: 'Reset your password',
+    html: `<p>Click here to reset your password</p>`
+  });
 };
 
 
