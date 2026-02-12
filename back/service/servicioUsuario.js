@@ -1,7 +1,7 @@
 const repositorioUsuarios = require('../repositorio/repositorioUsuario');
 const jwt = require('jsonwebtoken');
 const tokenJSON = 'pochocloSecreto123';
-const nodemailer = require('nodemailer');
+const resend = require("Resend");
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 
@@ -9,6 +9,9 @@ require('dotenv').config();
 const server_cloudflare = process.env.CLOUDFLARE
 const mail_user = process.env.MAIL_USER
 const mail_password = process.env.MAIL_PASSWORD
+
+import { Resend } from 'resend';
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 exports.registrarUsuario = async (data) => {
   try {
@@ -48,34 +51,20 @@ exports.enviarEmailRecuperacion = async (email) => {
   await repositorioUsuarios.actualizarTokenRecuperacion(email, token, expiracion);
 
   // 3. Enviar email
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: mail_user, 
-      pass: mail_password
+  const { email } = req.body;
+  try{
+      await resend.emails.send({
+      from: 'onboarding@resend.dev', // temporal mientras no verifiques dominio
+      to: email,
+      subject: 'Reset your password',
+      html: `<p>Click here to reset your password</p>`
+      });
+
+      return res.status(204).send();
+    } catch (error) {
+      console.error("Email error:", error);
+      return res.status(500).json({ error: "Failed to send email" });
     }
-  });
-
-  const mailOptions = {
-    to: email, //mail del usuario
-    from: mail_user, //poner un correo que manda el mail?
-    subject: 'Recuperación de contraseña - Pochocleando',
-    html: `
-      <p>Hola,</p>
-      <p>Recibimos una solicitud para restablecer tu contraseña.</p>
-      <p>Hacé clic en el siguiente enlace para continuar:</p>
-      <a href="${server_cloudflare}/recuperarpassword?token=${token}">Restablecer contraseña</a>
-      <p>Si no solicitaste este cambio, ignorá este mensaje.</p>
-    `
-  };
-
-  try {
-    await transporter.sendMail(mailOptions);
-    return 'Correo enviado correctamente';
-  } catch (err) {
-    console.error('Error enviando email:', err);
-    throw new Error('No se pudo enviar el correo');
-  }
 };
 
 
