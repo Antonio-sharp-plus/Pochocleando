@@ -1,16 +1,16 @@
 const repositorioUsuarios = require('../repositorio/repositorioUsuario');
 const jwt = require('jsonwebtoken');
 const tokenJSON = 'pochocloSecreto123';
-const resend = require("Resend");
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
+const { Resend } = require("resend");
 
 require('dotenv').config();
 const server_cloudflare = process.env.CLOUDFLARE
 const mail_user = process.env.MAIL_USER
 const mail_password = process.env.MAIL_PASSWORD
 
-import { Resend } from 'resend';
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 exports.registrarUsuario = async (data) => {
