@@ -33,7 +33,7 @@ const connection_string = `mongodb+srv://${nombre_db}:${contra_db}@pochocleando.
 app.use(cors({
   // * no es recomendable en producción
   // en un array colocar el dominio de amplify y luego http://localhost:4200
-  origin: ['https:/pochocleando.com.ar', 'http://localhost:4200', 'https://e094098b.proyecto---pochocleando.pages.dev'],
+  origin: ['https://pochocleando.com.ar', 'http://localhost:4200', 'https://e094098b.proyecto---pochocleando.pages.dev'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'], 
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
