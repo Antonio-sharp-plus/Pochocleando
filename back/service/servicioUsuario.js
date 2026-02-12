@@ -4,6 +4,8 @@ const tokenJSON = 'pochocloSecreto123';
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
+
+require('dotenv').config();
 const server_cloudflare = process.env.CLOUDFLARE
 const mail_user = process.env.MAIL_USER
 const mail_password = process.env.MAIL_PASSWORD
@@ -75,6 +77,8 @@ exports.enviarEmailRecuperacion = async (email) => {
     throw new Error('No se pudo enviar el correo');
   }
 };
+
+
 exports.resetearPasswordConToken = async (token, nuevaPassword) => {
   const usuario = await repositorioUsuarios.buscarUsuarioPorToken(token);
   if (!usuario) {
