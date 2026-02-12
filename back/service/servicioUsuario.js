@@ -67,8 +67,13 @@ exports.enviarEmailRecuperacion = async (email) => {
     `
   };
 
-  await transporter.sendMail(mailOptions);
-  return 'Correo enviado correctamente';
+  try {
+    await transporter.sendMail(mailOptions);
+    return 'Correo enviado correctamente';
+  } catch (err) {
+    console.error('Error enviando email:', err);
+    throw new Error('No se pudo enviar el correo');
+  }
 };
 exports.resetearPasswordConToken = async (token, nuevaPassword) => {
   const usuario = await repositorioUsuarios.buscarUsuarioPorToken(token);
