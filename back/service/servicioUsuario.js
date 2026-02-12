@@ -49,14 +49,14 @@ exports.enviarEmailRecuperacion = async (email) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: mail_user, //poner un correo que manda el mail?
+      user: mail_user, 
       pass: mail_password
     }
   });
 
   const mailOptions = {
     to: email, //mail del usuario
-    from: 'pochocleandoapp@gmail.com', //poner un correo que manda el mail?
+    from: mail_user, //poner un correo que manda el mail?
     subject: 'Recuperación de contraseña - Pochocleando',
     html: `
       <p>Hola,</p>
