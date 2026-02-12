@@ -54,6 +54,7 @@ exports.recuperarPassword = async (req, res) => {
     return res.status(500).json({ error: 'Error al procesar la recuperación de contraseña' });
   }
 };
+
 exports.resetearPassword = async (req, res) => {
   const { token, password } = req.body;
 

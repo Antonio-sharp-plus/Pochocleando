@@ -4,6 +4,9 @@ const tokenJSON = 'pochocloSecreto123';
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
+const server_cloudflare = process.env.CLOUDFLARE
+const mail_user = process.env.MAIL_USER
+const mail_password = process.env.MAIL_PASSWORD
 
 exports.registrarUsuario = async (data) => {
   try {
@@ -46,8 +49,8 @@ exports.enviarEmailRecuperacion = async (email) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'pochocleandoapp@gmail.com', //poner un correo que manda el mail?
-      pass: 'inzi xbtp ypir gtcg'
+      user: mail_user, //poner un correo que manda el mail?
+      pass: mail_password
     }
   });
 
@@ -59,7 +62,7 @@ exports.enviarEmailRecuperacion = async (email) => {
       <p>Hola,</p>
       <p>Recibimos una solicitud para restablecer tu contraseña.</p>
       <p>Hacé clic en el siguiente enlace para continuar:</p>
-      <a href="http://localhost:4200/recuperarpassword?token=${token}">Restablecer contraseña</a>
+      <a href="${server_cloudflare}/recuperarpassword?token=${token}">Restablecer contraseña</a>
       <p>Si no solicitaste este cambio, ignorá este mensaje.</p>
     `
   };
