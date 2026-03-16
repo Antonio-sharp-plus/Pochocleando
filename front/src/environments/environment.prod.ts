@@ -2,5 +2,5 @@
 
 export const environment = {
   production: true,
-  apiUrl: 'https://back-pochi.us-east-2.elasticbeanstalk.com/',
+  apiUrl: 'https://back-pochi.us-east-2.elasticbeanstalk.com',
 };
