@@ -2,5 +2,5 @@
 
 export const environment = {
   production: true,
-  apiUrl: 'https://proyecto-pochocleando-production.up.railway.app/api',
+  apiUrl: 'https://back-pochi.us-east-2.elasticbeanstalk.com/',
 };
