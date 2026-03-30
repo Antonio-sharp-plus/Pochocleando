@@ -30,7 +30,7 @@ const server_cloudflare = process.env.CLOUDFLARE
 // descomentar en caso de presentar para BACKEND
 const HOSTNAME = '127.0.0.1';
 
-const connection_string = `mongodb+srv://${nombre_db}:${contra_db}@pochocleando.axbmjib.mongodb.net/?appName=Pochocleando`;
+const connection_string = `mongodb+srv://${nombre_db}:${contra_db}@pochocleando.axbmjib.mongodb.net/pochocleando?authSource=admin`;
 
 app.use(cors({
   // * no es recomendable en producción
