@@ -22,7 +22,7 @@ const chatbotRouter = require('./router/routerChatbot');
 // en process.env.PORT está el puerto definido automáticamente por Beanstalk
 const port = process.env.PORT || 3000;
 const nombre_db = process.env.MONGO_NAME;
-const contra_db = process.env.MONGO_PASSWORD;
+const contra_db = encodeURIComponent(process.env.MONGO_PASSWORD);
 const server_cloudflare = process.env.CLOUDFLARE
 
 
