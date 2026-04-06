@@ -1,6 +1,6 @@
 const repositorioUsuarios = require('../repositorio/repositorioUsuario');
 const jwt = require('jsonwebtoken');
-const tokenJSON = 'pochocloSecreto123';
+const tokenJSON = process.env.JWT_SECRET;
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const { Resend } = require("resend");

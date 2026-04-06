@@ -1,6 +1,7 @@
-base_url = 'https://api.themoviedb.org/3';
-api_key = '0794702ad2b0918f600e5733c7ee0dea';
-lenguaje = 'es-ES';
+require('dotenv').config();
+const base_url = 'https://api.themoviedb.org/3';
+const api_key = process.env.TMDB_API_KEY;
+const lenguaje = 'es-ES';
 
 async function BuscarId(id, tipo){
     const response = await fetch(`${base_url}/${tipo}/${id}?api_key=${api_key}&language=${lenguaje}`);
