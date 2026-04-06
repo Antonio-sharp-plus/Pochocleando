@@ -77,7 +77,7 @@ app.use((err, req, res, next) => {
 // ATENCIÓN
 // este app.listen evita conflictos con NUBE
 // comentar en caso de presentar en BACKEND
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`Servidor corriendo en el puerto ${port}`)
 });
 
