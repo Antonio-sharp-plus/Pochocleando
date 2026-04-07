@@ -2,5 +2,5 @@
 
 export const environment = {
   production: true,
-  apiUrl: 'http://18.116.162.168:3000',
+  apiUrl: 'https://backend-pocho.org',
 };
