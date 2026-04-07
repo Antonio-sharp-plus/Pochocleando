@@ -36,7 +36,7 @@ app.use(cors({
   // * no es recomendable en producción
   // en un array colocar el dominio de amplify y luego http://localhost:4200
   // origin: ['https://pochocleando.com.ar', 'http://localhost:4200', server_cloudflare || '*'],
-  origin: server_cloudflare,
+  origin: ['https://pochocleando.com', 'https://www.pochocleando.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'], 
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
